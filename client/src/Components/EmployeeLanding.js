@@ -40,15 +40,6 @@ class EmployeeLanding extends Component {
     }
   }
 
-  //   componentDidMount() {
-  //     this.props.getAvailableItems();
-  //     setTimeout(() => {
-  //       let availableItemArray = [];
-  //       this.setState({ items: this.props.item.items });
-  //     }, 150);
-  //     console.log("Mounted");
-  //   }
-
   state = {
     employee: {},
     loading: false,
@@ -71,16 +62,17 @@ class EmployeeLanding extends Component {
     }
   };
 
-  preOrder = e => {
+  preOrders = e => {
     e.preventDefault();
 
     if (
       pointsLeft(this.state.employee) !== 0 &&
       pointsLeft(this.state.employee) >= this.state.order_price
     ) {
+      console.log("EMPLOYEE ID==>>", this.state.employee._id);
       let order = {};
 
-      order.employee_id = this.state.employee.employee_id;
+      order.employee_id = this.state.employee._id;
       order.order_for = this.state.order_for;
       order.order_price = this.state.order_price;
       if (order.order_for && order.order_price) {
@@ -112,10 +104,6 @@ class EmployeeLanding extends Component {
         this.warnModaltoggle();
       }, 500);
     }
-  };
-
-  confirmOrder = preOrders => {
-    this.props.addOrders(preOrders);
   };
 
   warnModaltoggle = () => {
@@ -156,13 +144,14 @@ class EmployeeLanding extends Component {
 
         <Row className="justify-content-center ">
           <Col xs="6" className="text-center defaultBackground">
-            <Form className="text-center my-5" onSubmit={this.preOrder}>
+            <Form className="text-center my-5" onSubmit={this.preOrders}>
               <FormGroup>
                 <Input
                   type="text"
                   className="form-control"
                   id="order_for"
                   name="order_for"
+                  value={this.state.order_for}
                   placeholder="What would you like to order for?"
                   onChange={this.handleChange}
                 />
@@ -173,6 +162,7 @@ class EmployeeLanding extends Component {
                   className="form-control"
                   id="order_price"
                   name="order_price"
+                  value={this.state.order_price}
                   placeholder="How many points does the order cost? *Numbers only*"
                   onChange={this.handleChange}
                 />

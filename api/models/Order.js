@@ -18,24 +18,22 @@ const orderSchema = new Schema({
   },
   //Have admin approved the order?
   admin_approval_status: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Boolean,
     default: false
   },
   //Which admin personnel approved the order?
-  admin_approved_by: {
+  admin_viewed_by: {
     type: mongoose.Schema.Types.ObjectId,
-    default: false,
     ref: "Admin"
   },
   //Have finance approved the order?
   finance_approval_status: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Boolean,
     default: false
   },
   //Which finance personnel approved the order?
-  finance_approved_by: {
+  finance_viewed_by: {
     type: mongoose.Schema.Types.ObjectId,
-    default: false,
     ref: "Finance"
   },
   //When was the order made?

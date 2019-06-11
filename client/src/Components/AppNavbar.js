@@ -288,7 +288,7 @@ class AppNavbar extends Component {
             {this.state.employee
               ? this.state.employee.employee_firstName + "'s "
               : ""}
-            Shopping Cart
+            Benefits Cart
           </ModalHeader>
           <ModalBody>
             <TransitionGroup>

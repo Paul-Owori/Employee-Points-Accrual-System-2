@@ -26,6 +26,16 @@ export const pointsLeft = employee => {
     }
   };
 
+  const pointsMultiplier = (tenure, apprxPointsAccrued) => {
+    if (tenure / 12 <= 2) {
+      return apprxPointsAccrued * 1;
+    } else if (tenure / 12 > 2 && tenure / 12 <= 4) {
+      return apprxPointsAccrued * 1.25;
+    } else if (tenure / 12 > 4) {
+      return apprxPointsAccrued * 1.5;
+    }
+  };
+
   let tier = employee.employee_seniority;
   console.log(tier);
 
@@ -40,7 +50,8 @@ export const pointsLeft = employee => {
 
   let tenure = monthDiff(today, joinDate);
   let apprxPointsAccrued = pointsPerMonth(tier) * tenure;
-  let actualPointsLeft = apprxPointsAccrued - pointsSpent;
+  let multipliedPoints = pointsMultiplier(tenure, apprxPointsAccrued);
+  let actualPointsLeft = multipliedPoints - pointsSpent;
   return actualPointsLeft;
 };
 
