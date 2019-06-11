@@ -13,23 +13,22 @@ import {
 import "./css/css_for_all.css";
 
 import { connect } from "react-redux"; //REQUIRED FOR REDUX
-import { signInEmployee, addEmployee } from "../Actions/employeeActions"; //REQUIRED FOR REDUX
+import { signInFinance, addFinance } from "../Actions/financeActions"; //REQUIRED FOR REDUX
 import PropTypes from "prop-types";
 
-class EmployeeSignUp extends Component {
+class FinanceSignUp extends Component {
   state = {
     loading: false,
     firstName: "",
     lastName: "",
     signUpEmail: "",
-    seniority: "",
+
     signUpPassword1: "",
     signUpPassword2: "",
     signInEmail: "",
     signInPassword: "",
-    employee: "",
+    finance: "",
     warnModalText: "",
-    joinDate: "",
     warnModal: false
   };
 
@@ -47,23 +46,20 @@ class EmployeeSignUp extends Component {
         this.state.signUpEmail &&
         this.state.signUpPassword2
       ) {
-        const newEmployee = {
+        const newFinance = {
           firstName: this.state.firstName,
           lastName: this.state.lastName,
           email: this.state.signUpEmail,
-          seniority: this.state.seniority,
-          password: this.state.signUpPassword2,
-          joinDate: this.state.joinDate
+          password: this.state.signUpPassword2
         };
 
-        this.props.addEmployee(newEmployee);
+        this.props.addFinance(newFinance);
         this.setState({
           firstName: "",
           lastName: "",
           signUpEmail: "",
           signUpPassword2: "",
-          signUpPassword1: "",
-          joinDate: ""
+          signUpPassword1: ""
         });
 
         this.setState({
@@ -91,25 +87,25 @@ class EmployeeSignUp extends Component {
   onSignIn = e => {
     e.preventDefault();
 
-    const signInEmployee = {
+    const signInFinance = {
       email: this.state.signInEmail,
       password: this.state.signInPassword
     };
-    this.props.signInEmployee(signInEmployee);
+    this.props.signInFinance(signInFinance);
     setTimeout(() => {
       if (
-        this.props.employee.employee &&
-        this.props.employee.employee.employee_firstName
+        this.props.finance.finance &&
+        this.props.finance.finance.finance_firstName
       ) {
-        this.props.history.push("/employee/landing");
+        this.props.history.push("/finance/landing");
       } else {
         this.setState({ warnModalText: "Login Error! Please try again" });
         setTimeout(() => {
           if (
-            this.props.employee.employee &&
-            this.props.employee.employee.employee_firstName
+            this.props.finance.finance &&
+            this.props.finance.finance.finance_firstName
           ) {
-            this.props.history.push("/employee/landing");
+            this.props.history.push("/finance/landing");
           } else {
             this.warnModaltoggle();
           }
@@ -137,7 +133,7 @@ class EmployeeSignUp extends Component {
           <Row className="justify-content-center ">
             <Col md="4" className="px-lg-5 defaultBackground">
               <h3 className="font-weight-bold colorME  text-center my-3">
-                Employee Sign-In
+                Finance Sign-In
               </h3>
               <Form className="text-center" onSubmit={this.onSignIn}>
                 <FormGroup>
@@ -176,7 +172,7 @@ class EmployeeSignUp extends Component {
             </Col>
             <Col md="4" className="px-lg-5 defaultBackground">
               <h3 className="font-weight-bold colorME text-center my-3">
-                Employee Sign-Up
+                Finance Sign-Up
               </h3>
               <Form className="text-center" onSubmit={this.onSignUp}>
                 <FormGroup>
@@ -212,28 +208,7 @@ class EmployeeSignUp extends Component {
                     onChange={this.handleChange}
                   />
                 </FormGroup>
-                <FormGroup>
-                  <Input
-                    type="seniority"
-                    className="form-control"
-                    id="seniority"
-                    name="seniority"
-                    value={this.state.seniority}
-                    placeholder="Seniority"
-                    onChange={this.handleChange}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Input
-                    type="joinDate"
-                    className="form-control"
-                    id="joinDate"
-                    name="joinDate"
-                    value={this.state.joinDate}
-                    placeholder="When did you join? (MM/DD/YYYY)"
-                    onChange={this.handleChange}
-                  />
-                </FormGroup>
+
                 <FormGroup>
                   <Input
                     type="password"
@@ -273,17 +248,17 @@ class EmployeeSignUp extends Component {
   }
 }
 
-EmployeeSignUp.propTypes = {
-  addEmployee: PropTypes.func.isRequired,
-  signInEmployee: PropTypes.func.isRequired,
-  employees: PropTypes.array.isRequired,
-  employee: PropTypes.object.isRequired
+FinanceSignUp.propTypes = {
+  addFinance: PropTypes.func.isRequired,
+  signInFinance: PropTypes.func.isRequired,
+  finances: PropTypes.array.isRequired,
+  finance: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  employee: state.employee
+  finance: state.finance
 });
 export default connect(
   mapStateToProps,
-  { addEmployee, signInEmployee }
-)(EmployeeSignUp);
+  { addFinance, signInFinance }
+)(FinanceSignUp);

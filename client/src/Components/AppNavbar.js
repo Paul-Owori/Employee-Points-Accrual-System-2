@@ -292,26 +292,34 @@ class AppNavbar extends Component {
               )}
 
               <NavItem>
-                {this.state.employee ||
-                this.state.admin ||
-                this.state.finance ? (
+                {(sessionStorage.getItem("employee") === null &&
+                sessionStorage.getItem("admin") === null &&
+                sessionStorage.getItem("finance") === null ? (
+                  false
+                ) : (
+                  true
+                )) ? (
                   ""
                 ) : (
                   <NavLink>
-                    <RouterNavLink to="/admin" className="greyME2">
+                    <RouterNavLink to="/admin/signup" className="greyME2">
                       Admin
                     </RouterNavLink>
                   </NavLink>
                 )}
               </NavItem>
               <NavItem>
-                {this.state.employee ||
-                this.state.admin ||
-                this.state.finance ? (
+                {(sessionStorage.getItem("employee") === null &&
+                sessionStorage.getItem("admin") === null &&
+                sessionStorage.getItem("finance") === null ? (
+                  false
+                ) : (
+                  true
+                )) ? (
                   ""
                 ) : (
                   <NavLink>
-                    <RouterNavLink to="/admin" className="greyME2">
+                    <RouterNavLink to="/finance/signup" className="greyME2">
                       Finance
                     </RouterNavLink>
                   </NavLink>
