@@ -78,12 +78,12 @@ export const getUpdatedEmployee = id => dispatch => {
 export const refundEmployee = (id, pointsRefunded) => dispatch => {
   dispatch(setEmployeesLoading());
 
-  fetch(`/employees/${id}`, {
+  fetch(`/employees/refund/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(pointsRefunded)
+    body: JSON.stringify({ pointsRefunded: pointsRefunded })
   }).then(response => {
     console.log(response);
   });

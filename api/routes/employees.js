@@ -146,6 +146,49 @@ router.patch("/:employeeID", (req, res, next) => {
     });
 });
 
+router.patch("/refund/:employeeID", (req, res, next) => {
+  const id = req.params.employeeID;
+  pointsRefunded = req.body.pointsRefunded;
+  console.log("pointsRefunded from backend==>>", pointsRefunded);
+
+  let currentPoints;
+
+  Employee.findById(id)
+    .exec()
+    .then(doc => {
+      if (doc) {
+        currentPoints = doc.employee_pointsSpent;
+      } else {
+        res.status(404).json({
+          message: "Nothing found"
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
+
+  (setTimeout = () => {
+    console.log("currentPoints from backend==>>", currentPoints);
+
+    let newPoints = parseFloat(currentPoints) - parseFloat(pointsRefunded);
+
+    console.log("newPoints from backend==>>", newPoints);
+
+    Employee.updateOne({ _id: id }, { employee_pointsSpent: newPoints })
+      .exec()
+      .then(result => {
+        res.status(200).json({ result });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ error: err });
+      });
+  }),
+    500;
+});
+
 router.delete("/:employeeID", (req, res, next) => {
   const id = req.params.employeeID;
   Employee.deleteOne({ _id: id })

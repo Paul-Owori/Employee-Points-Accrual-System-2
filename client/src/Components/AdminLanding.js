@@ -138,7 +138,7 @@ class AdminLanding extends Component {
     if (statusAndId.approved === false) {
       this.props.refundEmployee(
         statusAndId.employee_id,
-        -statusAndId.pointsSpent
+        statusAndId.pointsSpent
       );
     }
   };
