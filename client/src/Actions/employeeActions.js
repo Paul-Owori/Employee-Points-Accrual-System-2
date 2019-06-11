@@ -7,7 +7,8 @@ import {
   EMPLOYEES_LOADING,
   SIGNIN_EMPLOYEE,
   LOGOUT_EMPLOYEE,
-  GET_UPDATED_EMPLOYEE
+  GET_UPDATED_EMPLOYEE,
+  REFUND_EMPLOYEE
 } from "../Types/employeeTypes";
 
 export const getEmployees = () => dispatch => {
@@ -15,6 +16,13 @@ export const getEmployees = () => dispatch => {
   fetch("/employees")
     .then(res => res.json())
     .then(res => dispatch({ type: GET_EMPLOYEES, payload: res }));
+};
+
+export const getEmployee = id => dispatch => {
+  dispatch(setEmployeesLoading());
+  fetch(`/employees/${id}`)
+    .then(res => res.json())
+    .then(res => dispatch({ type: GET_EMPLOYEE, payload: res }));
 };
 
 export const addEmployee = employee => dispatch => {
@@ -65,6 +73,21 @@ export const getUpdatedEmployee = id => dispatch => {
       sessionStorage.setItem("employee", JSON.stringify(res));
       dispatch({ type: GET_UPDATED_EMPLOYEE, payload: res });
     });
+};
+
+export const refundEmployee = (id, pointsRefunded) => dispatch => {
+  dispatch(setEmployeesLoading());
+
+  fetch(`/employees/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(pointsRefunded)
+  }).then(response => {
+    console.log(response);
+  });
+  dispatch({ type: REFUND_EMPLOYEE });
 };
 
 export const employeeLogout = () => dispatch => {

@@ -6,7 +6,7 @@ import EmployeeLanding from "./Components/EmployeeLanding";
 import FinanceSignUp from "./Components/FinanceSignUp";
 // import FinanceLanding from "./Components/FinanceLanding";
 import AdminSignup from "./Components/AdminSignup";
-// import AdminLanding from "./Components/AdminLanding";
+import AdminLanding from "./Components/AdminLanding";
 import AppNavbar from "./Components/AppNavbar";
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -24,6 +24,7 @@ function App() {
           <Route exact path="/employee/landing" component={EmployeeLanding} />
           <Route exact path="/finance/signup" component={FinanceSignUp} />
           <Route exact path="/admin/signup" component={AdminSignup} />
+          <Route exact path="/admin/landing" component={AdminLanding} />
         </Router>
       </div>
     </Provider>

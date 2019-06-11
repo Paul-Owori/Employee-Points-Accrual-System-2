@@ -30,6 +30,10 @@ class EmployeeLanding extends Component {
     currentEmployee
       ? this.setState({ employee: currentEmployee })
       : this.setState({ employee: {} });
+
+    if (currentEmployee) {
+      getOrdersEmployee(currentEmployee._id);
+    }
   }
 
   componentWillReceiveProps() {

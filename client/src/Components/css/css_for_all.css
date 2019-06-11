@@ -16,11 +16,19 @@ body {
   color: rgb(167, 162, 162);
 }
 
+.break {
+  word-break: break-word;
+}
+
+.approveOrReject {
+  display: flex;
+}
+
 .points {
   color: green;
 }
 .points:hover {
-  color: darkgreen;
+  color: rgb(13, 80, 13);
 }
 
 .colorME {
@@ -38,6 +46,15 @@ body {
 .defaultBackground {
   border-radius: 10px;
   background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8));
+}
+.whiteBackground {
+  padding: 10px !important;
+  border-radius: 10px;
+  background: linear-gradient(rgba(199, 199, 199, 0.6), rgba(0, 0, 0, 0.6));
+}
+
+.tenPxMargin {
+  margin: 10px !important;
 }
 
 .greyME2:hover {

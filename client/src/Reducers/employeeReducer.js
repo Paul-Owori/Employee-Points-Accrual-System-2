@@ -7,7 +7,8 @@ import {
   DELETE_EMPLOYEE,
   EMPLOYEES_LOADING,
   SIGNIN_EMPLOYEE,
-  LOGOUT_EMPLOYEE
+  LOGOUT_EMPLOYEE,
+  REFUND_EMPLOYEE
 } from "../Types/employeeTypes";
 
 const initialState = {
@@ -22,7 +23,12 @@ export default function(state = initialState, action) {
     case GET_EMPLOYEES:
       return { ...state, employees: action.payload, loading: false };
     case GET_EMPLOYEE:
-      return { ...state, admin: action.payload, loading: false };
+      return { ...state, employee: action.payload, loading: false };
+    case REFUND_EMPLOYEE:
+      return {
+        ...state,
+        loading: false
+      };
     case LOGOUT_EMPLOYEE:
       return { ...state, employee: {}, loading: false, loggedIn: false };
     case DELETE_EMPLOYEE:

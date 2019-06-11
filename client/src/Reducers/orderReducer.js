@@ -7,7 +7,9 @@ import {
   GET_ORDERS_EMPLOYEE,
   UPDATE_ORDER,
   PRE_ORDER,
-  DELETE_PRE_ORDER
+  DELETE_PRE_ORDER,
+  UPDATE_ORDER_APPROVAL,
+  GET_ORDERS_NOT_REVIEWED
 } from "../Types/orderTypes";
 
 const initialState = {
@@ -20,6 +22,8 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_ORDERS:
+      return { ...state, orders: action.payload, loading: false };
+    case GET_ORDERS_NOT_REVIEWED:
       return { ...state, orders: action.payload, loading: false };
     case GET_ORDERS_EMPLOYEE:
       return { ...state, orders: action.payload, loading: false };
@@ -39,12 +43,14 @@ export default function(state = initialState, action) {
           order => order.id !== action.payload
         )
       };
-    case UPDATE_ORDER:
+
+    case UPDATE_ORDER_APPROVAL:
       return {
         ...state,
-        order: action.payload,
-        loading: false
+        loading: false,
+        orders: state.orders.filter(order => order.id !== action.payload)
       };
+
     case PRE_ORDER:
       return {
         ...state,

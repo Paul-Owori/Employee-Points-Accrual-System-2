@@ -69,6 +69,51 @@ router.get("/employee/:employeeID", (req, res, next) => {
     });
 });
 
+//Find Orders not reviewed yet by either admin or finance
+router.get("/reviewed/:adminOrFinance", (req, res, next) => {
+  const adminOrFinance = req.params.adminOrFinance;
+
+  adminOrFinance === "finance"
+    ? Order.find({ finance_viewed_by: { $exists: false } })
+        .exec()
+        .then(docs => {
+          if (docs.length > 0) {
+            res.status(200).json(docs);
+          } else {
+            res.status(404).json({
+              message: "No entries found."
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({
+            error: err
+          });
+        })
+    : adminOrFinance === "admin"
+    ? Order.find({ admin_viewed_by: { $exists: false } })
+        .exec()
+        .then(docs => {
+          if (docs.length > 0) {
+            res.status(200).json(docs);
+          } else {
+            res.status(404).json({
+              message: "No entries found."
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({
+            error: err
+          });
+        })
+    : res.status(404).json({
+        message: "Search parameters not specified."
+      });
+});
+
 router.get("/:orderID", (req, res, next) => {
   const id = req.params.orderID;
   Order.findById(id)

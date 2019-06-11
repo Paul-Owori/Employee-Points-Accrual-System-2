@@ -285,7 +285,7 @@ class AppNavbar extends Component {
                 <NavItem>
                   <NavLink>
                     <RouterNavLink to="/" className="greyME2">
-                      Signin / Signup
+                      Employee
                     </RouterNavLink>
                   </NavLink>
                 </NavItem>
