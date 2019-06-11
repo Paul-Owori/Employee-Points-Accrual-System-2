@@ -41,7 +41,7 @@ const orderSchema = new Schema({
   //When was the order made?
   order_date: {
     type: Date,
-    default: Date.now
+    default: new Date()
   }
 });
 
