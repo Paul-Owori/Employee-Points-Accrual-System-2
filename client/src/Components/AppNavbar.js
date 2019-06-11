@@ -18,7 +18,7 @@ import {
   Button
 } from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { employeeLogout } from "../Actions/employeeActions";
+import { employeeLogout, getUpdatedEmployee } from "../Actions/employeeActions";
 import { adminLogout } from "../Actions/adminActions";
 import { financeLogout } from "../Actions/financeActions";
 import {
@@ -71,14 +71,27 @@ class AppNavbar extends Component {
         sessionStorage.getItem("finance") === null
           ? false
           : true,
-      orders: sessionStorage.getItem("orders")
-        ? JSON.parse(sessionStorage.getItem("orders"))
-        : [],
+      orders:
+        this.state.orders && this.state.orders.length
+          ? this.state.orders.length
+          : JSON.parse(sessionStorage.getItem("cart")) !== null
+          ? JSON.parse(sessionStorage.getItem("cart")).length
+          : [],
       cartColor: "fas fa-shopping-cart  fa-lg",
 
       fav_color: "fas fa-heart fa-lg"
     });
   }
+
+  checkOrderCount = () => {
+    if (this.state.orders && this.state.orders.length) {
+      return this.state.orders.length;
+    } else if (JSON.parse(sessionStorage.getItem("cart")) !== null) {
+      return JSON.parse(sessionStorage.getItem("cart")).length;
+    } else {
+      return 0;
+    }
+  };
 
   componentWillReceiveProps() {
     this.setState({
@@ -116,6 +129,7 @@ class AppNavbar extends Component {
   };
 
   fav_modalToggle = () => {
+    console.log(this.props);
     setTimeout(() => {
       this.setState({ fav_modal: !this.state.fav_modal });
     }, 50);
@@ -126,31 +140,36 @@ class AppNavbar extends Component {
     this.props.adminLogout();
     this.props.financeLogout();
 
-    const user = sessionStorage.getItem("user");
+    const employee = sessionStorage.getItem("employee");
     const finance = sessionStorage.getItem("finance");
     const admin = sessionStorage.getItem("admin");
     const cart = sessionStorage.getItem("cart");
     const orders = sessionStorage.getItem("orders");
 
     setTimeout(() => {
-      if (user) {
-        sessionStorage.removeItem("user");
+      if (employee) {
+        sessionStorage.removeItem("employee");
+        this.setState({ employee: {} });
       }
       if (admin) {
         sessionStorage.removeItem("admin");
+        this.setState({ admin: {} });
       }
       if (finance) {
         sessionStorage.removeItem("finance");
+        this.setState({ finance: {} });
       }
       if (cart) {
         sessionStorage.removeItem("cart");
+        this.setState({ cart: [] });
       }
       if (orders) {
         sessionStorage.removeItem("orders");
+        this.setState({ orders: [] });
       }
     }, 50);
 
-    this.setState({ user: "", admin: "", finance: "" });
+    this.setState({ employee: "", admin: "", finance: "" });
   };
 
   signIn = () => {
@@ -158,24 +177,68 @@ class AppNavbar extends Component {
   };
 
   orderCheckout = orders => {
-    this.props.addOrders(orders);
     console.log("ORDERS RECEIVED ==>>", orders);
+    let currentEmployee = JSON.parse(sessionStorage.getItem("employee"));
+    this.props.addOrders(currentEmployee.employee_pointsSpent, orders);
+    setTimeout(() => {
+      sessionStorage.removeItem("cart");
+
+      this.props.getOrdersEmployee(currentEmployee._id);
+      setTimeout(() => {
+        this.setState({ orders: this.props.order.orders });
+      }, 150);
+    }, 380);
 
     setTimeout(() => {
-      orders.forEach(order => {
-        this.props.deletePreOrder(order.employee_id);
-      });
-      this.setState({ orders: this.props.order.orders });
-    }, 380);
+      this.props.getUpdatedEmployee(currentEmployee._id);
+    }, 600);
   };
 
-  deleteCartItem(employee_id) {
+  deleteCartItem = employee_id => {
     this.props.deletePreOrder(employee_id);
-  }
+  };
 
-  //   order.employee_id = req.body.employee_id;
-  //   order.order_for = req.body.order_for;
-  //   order.order_price = req.body.order_price;
+  checkApproval = (
+    admin_approval_status,
+    finance_approval_status,
+    admin_viewed_by,
+    finance_viewed_by
+  ) => {
+    if (admin_viewed_by) {
+      if (admin_approval_status === true) {
+        if (finance_viewed_by) {
+          if (finance_approval_status === true) {
+            return "Order Approved!";
+          } else {
+            return "Order Rejected by Finance! Any points spent have been refunded.";
+          }
+        } else {
+          return "Order pending Finance approval";
+        }
+      } else {
+        return "Order Rejected by Admin! Any points spent have been refunded.";
+      }
+    } else {
+      return "Order pending Admin and Finance approval";
+    }
+  };
+
+  mainRedirect = () => {
+    const employee = sessionStorage.getItem("employee");
+    const finance = sessionStorage.getItem("finance");
+    const admin = sessionStorage.getItem("admin");
+    const cart = sessionStorage.getItem("cart");
+    const orders = sessionStorage.getItem("orders");
+    if (employee) {
+      this.props.history.push("/employee/landing");
+    } else if (finance) {
+      this.props.history.push("/finance/landing");
+    } else if (admin) {
+      this.props.history.push("/admin/landing");
+    } else {
+      this.props.history.push("/");
+    }
+  };
 
   toGithub = () => {
     window.open(
@@ -189,7 +252,7 @@ class AppNavbar extends Component {
       <div>
         <Navbar color="dark" dark expand="sm" className="mb-5 fixed-top">
           <NavbarBrand>
-            <Link to="/" className="greyME2">
+            <Link onClick={this.mainRedirect} className="greyME2">
               Employee Benefits
             </Link>
           </NavbarBrand>
@@ -229,12 +292,27 @@ class AppNavbar extends Component {
               )}
 
               <NavItem>
-                {this.state.user || this.state.admin ? (
+                {this.state.employee ||
+                this.state.admin ||
+                this.state.finance ? (
                   ""
                 ) : (
                   <NavLink>
                     <RouterNavLink to="/admin" className="greyME2">
                       Admin
+                    </RouterNavLink>
+                  </NavLink>
+                )}
+              </NavItem>
+              <NavItem>
+                {this.state.employee ||
+                this.state.admin ||
+                this.state.finance ? (
+                  ""
+                ) : (
+                  <NavLink>
+                    <RouterNavLink to="/admin" className="greyME2">
+                      Finance
                     </RouterNavLink>
                   </NavLink>
                 )}
@@ -267,7 +345,7 @@ class AppNavbar extends Component {
                       className={this.state.fav_color}
                       onClick={this.fav_modalToggle}
                     />
-                    <small>{this.state.orders.length}</small>
+                    <small>{this.checkOrderCount()}</small>
                   </NavLink>
                 </NavItem>
               )}
@@ -362,20 +440,39 @@ class AppNavbar extends Component {
             <TransitionGroup className="shopping-list">
               {this.state.orders && this.state.orders.length ? (
                 this.state.orders.map(
-                  ({ _id, item_name, rentOrSale, item_price, date }) => (
+                  ({
+                    _id,
+                    order_price,
+                    order_for,
+                    order_date,
+                    admin_approval_status,
+                    finance_approval_status,
+                    admin_viewed_by,
+                    finance_viewed_by
+                  }) => (
                     <CSSTransition key={_id} timeout={500} classNames="fade">
                       <Row className="mb-3">
                         <Col xs="3">
-                          <h5>{item_name}</h5>
+                          <h5>Order for:{order_for}</h5>
                         </Col>
                         <Col xs="3">
-                          <h6>Ordered on {date}</h6>
+                          <h6>
+                            Ordered on {new Date(order_date).toDateString()}
+                          </h6>
                         </Col>
                         <Col xs="2">
-                          <h6>UGX {item_price}</h6>
+                          <h6>Unit-Point-Cost {order_price}</h6>
                         </Col>
                         <Col xs="2">
-                          <h6 className="font-weight-bold">{rentOrSale}</h6>
+                          <h6 className="font-weight-bold">
+                            Approval:
+                            {this.checkApproval(
+                              admin_approval_status,
+                              finance_approval_status,
+                              admin_viewed_by,
+                              finance_viewed_by
+                            )}
+                          </h6>
                         </Col>
                         <Col xs="2" />
                       </Row>
@@ -403,8 +500,8 @@ AppNavbar.propTypes = {
   deletePreOrder: PropTypes.func.isRequired,
   addOrders: PropTypes.func.isRequired,
   pre_orders: PropTypes.object.isRequired,
-  getOrdersUser: PropTypes.func.isRequired,
-  buyItem: PropTypes.func.isRequired
+  getOrdersEmployee: PropTypes.func.isRequired,
+  getUpdatedEmployee: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -421,6 +518,7 @@ export default connect(
     financeLogout,
     addOrders,
     deletePreOrder,
-    getOrdersEmployee
+    getOrdersEmployee,
+    getUpdatedEmployee
   }
 )(AppNavbar);

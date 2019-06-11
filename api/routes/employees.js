@@ -97,6 +97,33 @@ router.get("/:employeeID", (req, res, next) => {
     });
 });
 
+router.get("/updated/:employeeID", (req, res, next) => {
+  const id = req.params.employeeID;
+  Employee.findById(id)
+    .exec()
+    .then(doc => {
+      if (doc) {
+        res.status(200).send({
+          _id: doc._id,
+          employee_firstName: doc.employee_firstName,
+          employee_lastName: doc.employee_lastName,
+          employee_seniority: doc.employee_seniority,
+          employee_email: doc.employee_email,
+          employee_joinDate: doc.employee_joinDate,
+          employee_pointsSpent: doc.employee_pointsSpent
+        });
+      } else {
+        res.status(404).json({
+          message: "Nothing found"
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
+});
+
 router.patch("/:employeeID", (req, res, next) => {
   const id = req.params.employeeID;
 

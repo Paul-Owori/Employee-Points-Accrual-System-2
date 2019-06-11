@@ -36,11 +36,16 @@ export const getOrders = id => dispatch => {
     });
 };
 
-export const addOrders = orders => dispatch => {
+export const addOrders = (currentPointsSpent, orders) => dispatch => {
   dispatch(setOrdersLoading());
-  // console.log("ORDERS BEING SENT BY ACTIONS==>>", orders);
+  console.log("ORDERS BEING SENT BY ACTIONS==>>", orders);
   dispatch(setOrdersLoading());
+  console.log("CURRENT POINTS SPENT==>>", currentPointsSpent);
+  let ordersTotalCost = currentPointsSpent;
+
   orders.forEach(order => {
+    ordersTotalCost =
+      parseFloat(order.order_price) + parseFloat(ordersTotalCost);
     fetch("/orders", {
       method: "POST",
       headers: {
@@ -48,8 +53,25 @@ export const addOrders = orders => dispatch => {
       },
       body: JSON.stringify(order)
     }).then(response => {
-      console.log(response);
+      console.log("RESPONSE==>", response);
     });
+  });
+  console.log("ORDER TOTAL COST==>>", ordersTotalCost);
+  let pointsSpent = [
+    {
+      propName: `employee_pointsSpent`,
+      value: `${ordersTotalCost}`
+    }
+  ];
+
+  fetch(`/employees/${orders[0].employee_id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(pointsSpent)
+  }).then(response => {
+    console.log(response);
   });
 };
 

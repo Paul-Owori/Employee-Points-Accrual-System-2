@@ -6,7 +6,8 @@ import {
   DELETE_EMPLOYEE,
   EMPLOYEES_LOADING,
   SIGNIN_EMPLOYEE,
-  LOGOUT_EMPLOYEE
+  LOGOUT_EMPLOYEE,
+  GET_UPDATED_EMPLOYEE
 } from "../Types/employeeTypes";
 
 export const getEmployees = () => dispatch => {
@@ -53,6 +54,16 @@ export const signInEmployee = employee => dispatch => {
       } else {
         console.log("Login failed");
       }
+    });
+};
+
+export const getUpdatedEmployee = id => dispatch => {
+  dispatch(setEmployeesLoading());
+  fetch(`/employees/updated/${id}`)
+    .then(res => res.json())
+    .then(res => {
+      sessionStorage.setItem("employee", JSON.stringify(res));
+      dispatch({ type: GET_UPDATED_EMPLOYEE, payload: res });
     });
 };
 

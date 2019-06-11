@@ -25,7 +25,7 @@ const employeeSchema = new Schema({
   },
   employee_joinDate: {
     type: Date,
-    default: Date.now
+    default: new Date()
   },
   //This will be a dynamic figure to be deducted
   //from the total number of points an employee should have

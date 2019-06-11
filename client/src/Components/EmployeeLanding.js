@@ -35,7 +35,10 @@ class EmployeeLanding extends Component {
   componentWillReceiveProps() {
     if (this.props.order.orders && this.props.order.orders.length) {
       this.setState({
-        orders: this.props.order.orders
+        orders: this.props.order.orders,
+        employee: sessionStorage.getItem("employee")
+          ? JSON.parse(sessionStorage.getItem("employee"))
+          : ""
       });
     }
   }
@@ -128,15 +131,19 @@ class EmployeeLanding extends Component {
           </h2>
           <h5 className="font-weight-bold   text-center">
             Employment seniority tier:{" "}
-            {this.state.employee
-              ? this.state.employee.employee_seniority
-              : this.props.employee.employee
-              ? this.props.employee.employee.seniority
-              : ""}
+            <span className="points">
+              {this.state.employee
+                ? this.state.employee.employee_seniority
+                : this.props.employee.employee
+                ? this.props.employee.employee.seniority
+                : ""}
+            </span>
           </h5>
           <h5 className="font-weight-bold   text-center">
             Available benefit points:{" "}
-            {this.state.employee ? pointsLeft(this.state.employee) : 0}
+            <span className="points">
+              {this.state.employee ? pointsLeft(this.state.employee) : 0}
+            </span>
           </h5>
 
           <p className="font-weight-bold   text-center my-3">Place an order;</p>
