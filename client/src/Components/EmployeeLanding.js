@@ -57,7 +57,7 @@ class EmployeeLanding extends Component {
         <h2 className="text-center">
           Your seniority is of tier{" "}
           {this.state.employee
-            ? this.state.employee.seniority
+            ? this.state.employee.employee_seniority
             : this.props.employee.employee
             ? this.props.employee.employee.seniority
             : ""}
