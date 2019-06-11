@@ -10,6 +10,8 @@ import {
   Modal,
   ModalHeader
 } from "reactstrap";
+import "./css/css_for_all.css";
+
 import { pointsLeft } from "../PointCalculator/index";
 
 import { connect } from "react-redux";
@@ -125,9 +127,9 @@ class EmployeeLanding extends Component {
 
   render() {
     return (
-      <Container>
+      <Container fluid className="allContainer">
         <div className="text-center">
-          <h2 className="text-center">
+          <h2 className="font-weight-bold   text-center my-3">
             Welcome{" "}
             {this.state.employee
               ? this.state.employee.employee_firstName
@@ -136,26 +138,25 @@ class EmployeeLanding extends Component {
               : ""}
             !
           </h2>
-          <h5 className="text-center">
-            Your seniority is of tier{" "}
+          <h5 className="font-weight-bold   text-center">
+            Employment seniority tier:{" "}
             {this.state.employee
               ? this.state.employee.employee_seniority
               : this.props.employee.employee
               ? this.props.employee.employee.seniority
               : ""}
-            !
           </h5>
-          <h5 className="text-center">
-            Your available points are{" "}
-            {this.state.employee ? pointsLeft(this.state.employee) : 0}!
+          <h5 className="font-weight-bold   text-center">
+            Available benefit points:{" "}
+            {this.state.employee ? pointsLeft(this.state.employee) : 0}
           </h5>
 
-          <p>Place an order;</p>
+          <p className="font-weight-bold   text-center my-3">Place an order;</p>
         </div>
 
-        <Row className="text-center">
-          <Col xs="6" className="text-center">
-            <Form className="text-center border" onSubmit={this.preOrder}>
+        <Row className="justify-content-center ">
+          <Col xs="6" className="text-center defaultBackground">
+            <Form className="text-center my-5" onSubmit={this.preOrder}>
               <FormGroup>
                 <Input
                   type="text"

@@ -10,7 +10,8 @@ import {
   Modal,
   ModalHeader
 } from "reactstrap";
-//import "./css/user.css";
+import "./css/css_for_all.css";
+
 import { connect } from "react-redux"; //REQUIRED FOR REDUX
 import { signInEmployee, addEmployee } from "../Actions/employeeActions"; //REQUIRED FOR REDUX
 import PropTypes from "prop-types";
@@ -126,14 +127,16 @@ class EmployeeSignUp extends Component {
 
   render() {
     return (
-      <Container>
+      <Container fluid className="allContainer">
         <p>
-          <h1 className="font-weight-light text-center my-5">Welcome!</h1>
+          <h1 className="font-weight-bold colorME  text-center my-3">
+            Welcome!
+          </h1>
         </p>
         <Container className="text-center mb-5">
           <Row className="justify-content-center ">
-            <Col md="4" className="px-lg-5">
-              <h3 className="font-weight-bold colorME text-center my-3">
+            <Col md="4" className="px-lg-5 defaultBackground">
+              <h3 className="font-weight-bold colorME  text-center my-3">
                 Sign-In
               </h3>
               <Form className="text-center" onSubmit={this.onSignIn}>
@@ -169,10 +172,12 @@ class EmployeeSignUp extends Component {
               </Form>
             </Col>
             <Col md="2">
-              <h3 className="font-weight-bold text-center my-3">OR</h3>
+              <h3 className="font-weight-bold colorME text-center my-3">OR</h3>
             </Col>
-            <Col md="4" className="px-lg-5">
-              <h3 className="font-weight-bold text-center my-3">Sign-Up</h3>
+            <Col md="4" className="px-lg-5 defaultBackground">
+              <h3 className="font-weight-bold colorME text-center my-3">
+                Sign-Up
+              </h3>
               <Form className="text-center" onSubmit={this.onSignUp}>
                 <FormGroup>
                   <Input

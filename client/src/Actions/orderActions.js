@@ -92,8 +92,8 @@ export const preOrder = order => dispatch => {
 export const deletePreOrder = id => dispatch => {
   dispatch(setOrdersLoading());
   let oldCart = JSON.parse(sessionStorage.getItem("cart"));
-  let newCart = oldCart.filter(item => {
-    return item._id !== id;
+  let newCart = oldCart.filter(employee => {
+    return employee._id !== id;
   });
   sessionStorage.setItem("cart", JSON.stringify(newCart));
 
