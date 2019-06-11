@@ -1,4 +1,5 @@
-const pointsLeft = employee => {
+export const pointsLeft = employee => {
+  console.log(employee);
   //Function to count the months of tenure of an employee
   const monthDiff = (today, joinDate) => {
     let months;
@@ -26,13 +27,20 @@ const pointsLeft = employee => {
   };
 
   let tier = employee.employee_seniority;
+  console.log(tier);
+
   let pointsSpent = employee.employee_pointsSpent;
+  console.log("Spent==>", pointsSpent);
+
   let joinDate = employee.employee_joinDate;
+  console.log("JoinDate==>", joinDate);
+
   let today = new Date();
+  console.log("Today==>", today);
 
   let tenure = monthDiff(today, joinDate);
   let apprxPointsAccrued = pointsPerMonth(tier) * tenure;
-  actualPointsLeft = apprxPointsAccrued - pointsSpent;
+  let actualPointsLeft = apprxPointsAccrued - pointsSpent;
   return actualPointsLeft;
 };
 

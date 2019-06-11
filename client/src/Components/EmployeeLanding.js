@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
+import { pointsLeft } from "../PointCalculator/index";
 
 import { connect } from "react-redux";
 import {
@@ -63,7 +64,8 @@ class EmployeeLanding extends Component {
           !
         </h2>
         <h2 className="text-center">
-          Your available points are {this.state.points ? this.state.points : 0}!
+          Your available points are{" "}
+          {this.state.employee ? pointsLeft(this.state.employee) : 0}!
         </h2>
 
         <p>The following buttons are only for testing purposes;</p>

@@ -32,6 +32,7 @@ router.post("/signup", (req, res, next) => {
   employee.employee_lastName = req.body.lastName;
   employee.employee_email = req.body.email;
   employee.employee_seniority = req.body.seniority;
+  employee.employee_joinDate = req.body.joinDate;
   employee.setPassword(req.body.password);
 
   //This saves the employee in the database
@@ -65,7 +66,8 @@ router.post("/signin", (req, res) => {
           employee_lastName: employee.employee_lastName,
           employee_seniority: employee.employee_seniority,
           employee_email: employee.employee_email,
-          employee_joinDate: employee.employee_joinDate
+          employee_joinDate: employee.employee_joinDate,
+          employee_pointsSpent: employee.employee_pointsSpent
         });
       } else {
         return res.status(404).send({

@@ -28,6 +28,7 @@ class EmployeeSignUp extends Component {
     signInPassword: "",
     employee: "",
     warnModalText: "",
+    joinDate: "",
     warnModal: false
   };
 
@@ -50,7 +51,8 @@ class EmployeeSignUp extends Component {
           lastName: this.state.lastName,
           email: this.state.signUpEmail,
           seniority: this.state.seniority,
-          password: this.state.signUpPassword2
+          password: this.state.signUpPassword2,
+          joinDate: this.state.joinDate
         };
 
         this.props.addEmployee(newEmployee);
@@ -59,7 +61,8 @@ class EmployeeSignUp extends Component {
           lastName: "",
           signUpEmail: "",
           signUpPassword2: "",
-          signUpPassword1: ""
+          signUpPassword1: "",
+          joinDate: ""
         });
 
         this.setState({
@@ -212,6 +215,17 @@ class EmployeeSignUp extends Component {
                     name="seniority"
                     value={this.state.seniority}
                     placeholder="Seniority"
+                    onChange={this.handleChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Input
+                    type="joinDate"
+                    className="form-control"
+                    id="joinDate"
+                    name="joinDate"
+                    value={this.state.joinDate}
+                    placeholder="When did you join? (MM/DD/YYYY)"
                     onChange={this.handleChange}
                   />
                 </FormGroup>
